@@ -33,7 +33,7 @@ while True:
     # make copy of threshframe, retrieve external, approximate contours
     (_, cnts, _) = cv2.findContours(thresh_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    # filter out the conturs and keep the ones with area larger than 1000 pixels
+    # filter out the conturs and keep the ones with area larger than 10000 pixels
     # Create rectangle around large contours
     for contour in cnts:
         if cv2.contourArea(contour) < 10000:
@@ -44,6 +44,8 @@ while True:
 
     # append status to status_list to track start and end
     status_list.append(status)
+
+    status_list = status_list[-2:]
 
     # check whether last two items of list are changing; if so append datetime to times list
     if status_list[-1] == 1 and status_list[-2] == 0:
@@ -57,7 +59,8 @@ while True:
     cv2.imshow("Threshold Frame", thresh_frame)
     cv2.imshow("Color Frame", frame)
 
-    key = cv2.waitKey(100)  # time the program waits on each frame display
+    # time the program waits on each frame display. TWEAK THIS TO ADJUST FPS
+    key = cv2.waitKey(100)
 
     if key == ord('q'):  # sets q to break out of the loop
         if status == 1:
